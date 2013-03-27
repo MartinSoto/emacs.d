@@ -15,6 +15,10 @@
 ;; uniquify.
 (require 'uniquify)
 
+;; ido mode.
+(require 'ido)
+(ido-mode t)
+
 ;; Pymacs.
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
