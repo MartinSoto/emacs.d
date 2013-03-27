@@ -136,7 +136,8 @@
  '(indent-tabs-mode nil)
  '(nil nil t)
  '(show-trailing-whitespace t)
- '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify)))
+ '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
+ '(x-select-enable-clipboard t))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
