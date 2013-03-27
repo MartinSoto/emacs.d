@@ -12,6 +12,9 @@
 ;; Don't auto insert empty lines at file end.
 (setq-default next-line-add-newlines nil)
 
+;; uniquify.
+(require 'uniquify)
+
 ;; Pymacs.
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
@@ -128,7 +131,8 @@
  '(global-whitespace-mode nil)
  '(indent-tabs-mode nil)
  '(nil nil t)
- '(show-trailing-whitespace t))
+ '(show-trailing-whitespace t)
+ '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify)))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
