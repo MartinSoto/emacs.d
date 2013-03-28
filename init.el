@@ -19,6 +19,15 @@
 (require 'ido)
 (ido-mode t)
 
+;; Add our emacs Python directory to PYTHONPATH. It contains the
+;; Pymacs and rope packages.
+(setenv "PYTHONPATH"
+  (concat
+   "/home/soto/.emacs.d/python" path-separator
+   (getenv "PYTHONPATH")
+  )
+)
+
 ;; Pymacs.
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
