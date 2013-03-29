@@ -60,6 +60,29 @@
 (add-hook 'coffee-mode-hook
   '(lambda() (set (make-local-variable 'tab-width) 4)))
 
+;; Flymake:
+
+;; Flymake for JavaScript (http://lapin-bleu.net/riviera/?p=191).
+(when (load "flymake" t)
+  (defun flymake-jslint-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "~/.emacs.d/node_modules/.bin/jslint" (list "--terse" local-file))))
+
+  (setq flymake-err-line-patterns
+	(cons '("^\\(.*\\)(\\([[:digit:]]+\\)):\\(.*\\)$"
+		1 2 nil 3)
+	      flymake-err-line-patterns))
+
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.js\\'" flymake-jslint-init))
+
+  ;(require 'flymake-cursor)
+)
+
 ;; ;; Docstring edit
 ;; (load "/home/soto/Desktop/Projects/rdf-devel/docedit/docedit.el")
 
