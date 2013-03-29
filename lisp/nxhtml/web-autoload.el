@@ -46,7 +46,6 @@
 
 ;;(eval-when-compile (require 'web-vcs)) ;; Gives recursion
 ;;(eval-when-compile (require 'nxhtml-base))
-(declare-function web-vcs-message-with-face "web-vcs")
 
 (defcustom web-autoload-autocompile t
   "Byt compile downloaded files if t."

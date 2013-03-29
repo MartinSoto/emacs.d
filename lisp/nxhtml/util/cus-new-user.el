@@ -47,11 +47,6 @@
 ;;
 ;;; Code:
 
-(eval-when-compile (require 'cl))
-(require 'cus-edit)
-(require 'help-mode)
-
-
 (defvar cusnu-my-skin-widget nil)
 
 (defvar cusnu-insert-os-spec-fun nil)
@@ -128,7 +123,7 @@ possibly because you started Emacs with `-q'.")
       (if custom-buffer-verbose-help
           (widget-insert "\n
  Operate on all settings in this buffer that are not marked HIDDEN:\n"))
-      (let ((button (lambda (tag action active help icon label)
+      (let ((button (lambda (tag action active help icon)
                       (widget-insert " ")
                       (if (eval active)
                           (widget-create 'push-button :tag tag
@@ -800,7 +795,7 @@ See also the comment in the exported file."
            (add-to-list faces-par sym))
           ((get sym 'custom-group)
            (unless (memq sym groups-par) ;; Don't loop
-             (cusnu-get-options-and-faces members groups-par options-par faces-par)))
+             (cusnu-get-options-and-faces groups-par options-par faces-par)))
           (t (insert ";; Not a custom variable or face: %s\n" sym)))))
 
 (provide 'cus-new-user)

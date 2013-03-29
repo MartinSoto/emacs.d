@@ -51,7 +51,30 @@
 (eval-when-compile (require 'mumamo))
 (eval-and-compile  (require 'mumamo-fun))
 (eval-when-compile (require 'rng-valid nil t))
+;;(mumamo-fun-require)
 
+;; (defgroup nxhtml-auto-val-head nil
+;;   "Automatic turn on of XHTML validation headers."
+;;   :group 'nxhtml)
+
+;; (defmacro define-fictive-validation-header-toggle (fun-sym default-value)
+;;   (let* ((fun-name (symbol-name fun-sym))
+;;          (custom-sym (intern (concat fun-name "-auto-val-head")))
+;;          (hook-sym (intern-soft (concat fun-name "-hook")))
+;;          (docstring
+;;           (concat "Automatic XHTML validation header for `" fun-name "'.
+;; ´")))
+;;     (assert hook-sym)
+;;     `(defcustom ,custom-sym ,default-value
+;;        ,docstring
+;;        :type 'boolean
+;;        :set (lambda (sym val)
+;;               (set-default sym val)
+;;               (if val
+;;                   (add-hook ',hook-sym 'nxhtml-turn-on-validation-header-mode)
+;;                 (remove-hook ',hook-sym 'nxhtml-turn-on-validation-header-mode)))
+;;        :group 'nxhtml-auto-val-head)
+;;     ))
 
 ;; Fix-me: add chunk type attr string as last alternative. This will
 ;; allow things like myattr="<?php echo ?>".
@@ -69,7 +92,6 @@ See also `mumamo-alt-php-tags-mode'."
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 (add-hook 'nxhtml-mumamo-mode-hook 'mumamo-define-html-file-wide-keys)
 ;;(define-fictive-validation-header-toggle nxhtml-mumamo-mode t)
@@ -87,7 +109,6 @@ This also covers inlined style and javascript."
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 
 ;;;###autoload
@@ -103,7 +124,6 @@ This also covers inlined style and javascript."
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 
 ;;;###autoload
@@ -128,7 +148,6 @@ This covers inlined style and javascript."
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 (add-hook 'mason-nxhtml-mumamo-mode-hook 'mumamo-define-html-file-wide-keys)
 ;;(mumamo-inherit-sub-chunk-family-locally 'mason-nxhtml-mumamo-mode 'mason-nxhtml-mumamo-mode)
@@ -173,7 +192,6 @@ This also covers inlined style and javascript."
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -215,7 +233,6 @@ This also covers inlined style and javascript."
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -229,7 +246,6 @@ This also covers inlined style and javascript."
    (mumamo-chunk-xml-pi
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     ;;mumamo-chunk-inlined-style
     ;;mumamo-chunk-inlined-script
     mumamo-chunk-smarty-literal
@@ -251,7 +267,6 @@ This also covers inlined style and javascript."
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -262,13 +277,11 @@ This also covers inlined style and javascript."
   "Turn on multiple major modes for JSP with main mode `nxhtml-mode'.
 This also covers inlined style and javascript."
   ("JSP nXhtml Family" nxhtml-mode
-   (mumamo-chunk-jsp-hidden-comment
-    mumamo-chunk-jsp
+   (mumamo-chunk-jsp
     mumamo-chunk-inlined-style
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -279,14 +292,11 @@ This also covers inlined style and javascript."
   "Turn on multiple major modes for eRuby with main mode `nxhtml-mode'.
 This also covers inlined style and javascript."
   ("eRuby nXhtml Family" nxhtml-mode
-   (mumamo-chunk-eruby-comment
-    mumamo-chunk-eruby=
-    mumamo-chunk-eruby
+   (mumamo-chunk-eruby
     mumamo-chunk-inlined-style
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -302,7 +312,6 @@ This also covers inlined style and javascript."
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -340,7 +349,6 @@ This also covers inlined style and javascript."
     mumamo-chunk-inlined-script
     mumamo-chunk-style=
     mumamo-chunk-onjs=
-    mumamo-chunk-hrefjs=
     )))
 
 ;; Fix-me: This caused mumamo to loop during fontification since

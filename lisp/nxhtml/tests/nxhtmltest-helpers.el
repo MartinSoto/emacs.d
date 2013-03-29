@@ -45,7 +45,7 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl))
-(require 'ertn2)
+(require 'ert2)
 
 (defun nxhtmltest-goto-line (line)
   (save-restriction
@@ -54,13 +54,13 @@
     (forward-line (1- line))))
 
 (defun nxhtmltest-mumamo-error-messages ()
-  (ertn-get-messages "^MU:MuMaMo error"))
+  (ert-get-messages "^MU:MuMaMo error"))
 
 (defun nxhtmltest-should-no-mumamo-errors ()
-  (ertn-should (not (nxhtmltest-mumamo-error-messages))))
+  (ert-should (not (nxhtmltest-mumamo-error-messages))))
 
 (defun nxhtmltest-should-no-nxml-errors ()
-  (ertn-should (not (ertn-get-messages "Internal nXML mode error"))))
+  (ert-should (not (ert-get-messages "Internal nXML mode error"))))
 
 (defun nxhtmltest-be-really-idle (seconds &optional prompt-mark)
   (unless prompt-mark (setq prompt-mark ""))
