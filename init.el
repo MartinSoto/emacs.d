@@ -80,7 +80,7 @@
   (add-to-list 'flymake-allowed-file-name-masks
                '("\\.js\\'" flymake-jslint-init))
 
-  ;(require 'flymake-cursor)
+  (require 'flymake-cursor)
 )
 
 ;; ;; Docstring edit
