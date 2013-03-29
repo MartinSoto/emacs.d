@@ -23,7 +23,7 @@
 ;; Pymacs and rope packages.
 (setenv "PYTHONPATH"
   (concat
-   "/home/soto/.emacs.d/python" path-separator
+   (getenv "HOME") "/.emacs.d/python" path-separator
    (getenv "PYTHONPATH")
   )
 )
