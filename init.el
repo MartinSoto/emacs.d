@@ -44,16 +44,9 @@
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/lisp/snippets")
 
-;; Espresso mode (Javascript)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . espresso-mode))
-(autoload #'espresso-mode "espresso" "Start espresso-mode" t)
-
 ;; nXhtml
 (load "~/.emacs.d/lisp/nxhtml/autostart.el")
 (setq debug-on-error nil)
-
-;; nXhtml messes up the JavaScript mode setting.
-(push '("\\.js\\'" . espresso-mode) auto-mode-alist)
 
 ;; CoffeeScript mode.
 (require 'coffee-mode)
@@ -82,6 +75,11 @@
 
   (require 'flymake-cursor)
 )
+
+(add-hook 'js-mode-hook
+	  (lambda ()
+            (flymake-mode 1)
+            (define-key js-mode-map "\C-c\C-n" 'flymake-goto-next-error)))
 
 ;; ;; Docstring edit
 ;; (load "/home/soto/Desktop/Projects/rdf-devel/docedit/docedit.el")
