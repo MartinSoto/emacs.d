@@ -12,10 +12,11 @@
 ;; Don't auto insert empty lines at file end.
 (setq-default next-line-add-newlines nil)
 
-;; uniquify.
+;; uniquify: Pick up buffer names smartly for buffers with the same
+;; file name but different directories.
 (require 'uniquify)
 
-;; ido mode.
+;; ido mode: Magical, minibuffer-based file and buffer selection.
 (require 'ido)
 (ido-mode t)
 
