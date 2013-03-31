@@ -20,19 +20,57 @@
 (require 'ido)
 (ido-mode t)
 
+;; YASnippet.
+(add-to-list 'load-path
+              "~/.emacs.d/lisp/yasnippet")
+(require 'yasnippet)
+(yas-global-mode 1)
+;; Since Auto-complete calls Yasnippet expansion, don't bind TAB to
+;; the Yasnippet expansion function directly.
+(define-key yas-minor-mode-map [(tab)] nil)
+(define-key yas-minor-mode-map (kbd "TAB") nil)
+
 ;; Autocomplete mode.
 (add-to-list 'load-path "~/.emacs.d/lisp/auto-complete")
 ; Load the default configuration.
 (require 'auto-complete-config)
 ; Make sure we can find the dictionaries.
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/lisp/auto-complete/dict")
-; Use dictionaries by default.
-(setq-default ac-sources (add-to-list 'ac-sources 'ac-source-dictionary))
+; Additional auto-completion sources (for all modes).
+(setq-default ac-sources
+              (append '(ac-source-dictionary ac-source-yasnippet)
+                      ac-sources))
 (global-auto-complete-mode t)
 ; Start auto-completion after 2 characters of a word.
 (setq ac-auto-start 2)
-; case sensitivity is important when finding matches.
+; Case sensitivity is important when finding matches.
 (setq ac-ignore-case nil)
+
+;; Fix Auto-complete's Yasnippet binding so that it works with
+;; Yasnippet 0.8. Auto-complete 1.4 should fix this problem, so this
+;; hack can be removed after upgrading.
+(defun ac-yasnippet-candidates ()
+  (with-no-warnings
+(cond (;; 0.8 onwards
+       (fboundp 'yas-active-keys)
+       (all-completions ac-prefix (yas-active-keys)))
+      (;; >0.6.0
+       (fboundp 'yas/get-snippet-tables)
+       (apply 'append (mapcar 'ac-yasnippet-candidate-1
+                  (condition-case nil
+                  (yas/get-snippet-tables major-mode)
+                (wrong-number-of-arguments
+                 (yas/get-snippet-tables)))))
+       )
+      (t
+       (let ((table
+          (if (fboundp 'yas/snippet-table)
+          ;; <0.6.0
+          (yas/snippet-table major-mode)
+        ;; 0.6.0
+        (yas/current-snippet-table))))
+     (if table
+         (ac-yasnippet-candidate-1 table)))))))
 
 ;; Add our emacs Python directory to PYTHONPATH. It contains the
 ;; Pymacs and rope packages.
@@ -53,11 +91,6 @@
 
 ;; Ropemacs.
 (pymacs-load "ropemacs" "rope-")
-
-;; YASnippet.
-(require 'yasnippet)
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/lisp/snippets")
 
 ;; nXhtml
 (load "~/.emacs.d/lisp/nxhtml/autostart.el")
