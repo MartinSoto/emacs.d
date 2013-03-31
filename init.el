@@ -177,6 +177,7 @@
  '(debian-changelog-mailing-address "donsoto@gmail.com")
  '(desktop-save (quote if-exists))
  '(desktop-save-mode t)
+ '(global-auto-revert-mode t)
  '(global-whitespace-mode nil)
  '(indent-tabs-mode nil)
  '(nil nil t)
