@@ -5,3 +5,4 @@ syntax: glob
 session.*
 auto-save-list/*
 *.pyc
+ac-comphist.dat
