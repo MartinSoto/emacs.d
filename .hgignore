@@ -6,3 +6,4 @@ session.*
 auto-save-list/*
 *.pyc
 ac-comphist.dat
+lisp/nxhtml/etc/schema/xhtml-loader.rnc
