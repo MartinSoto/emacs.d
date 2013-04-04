@@ -91,6 +91,11 @@
 
 ;; Ropemacs.
 (pymacs-load "ropemacs" "rope-")
+; Use rope as completion source for Python.
+(ac-ropemacs-initialize)
+(add-hook 'python-mode-hook
+          (lambda ()
+	    (add-to-list 'ac-sources 'ac-source-ropemacs)))
 
 ;; nXhtml
 (load "~/.emacs.d/lisp/nxhtml/autostart.el")
