@@ -75,11 +75,11 @@
 ;; Add our emacs Python directory to PYTHONPATH. It contains the
 ;; Pymacs and rope packages.
 (setenv "PYTHONPATH"
-  (concat
-   (getenv "HOME") "/.emacs.d/python" path-separator
-   (getenv "PYTHONPATH")
-  )
-)
+        (let ((python-path (getenv "PYTHONPATH"))
+              (local-path (concat (getenv "HOME") "/.emacs.d/python")))
+          (if python-path
+              (concat local-path path-separator python-path)
+            local-path)))
 
 ;; Pymacs.
 (autoload 'pymacs-apply "pymacs")
