@@ -2,6 +2,7 @@ syntax: glob
 
 *~
 ~*
+*.elc
 session.*
 auto-save-list/*
 *.pyc
