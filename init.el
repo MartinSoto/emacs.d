@@ -17,8 +17,12 @@
 (require 'uniquify)
 
 ;; ido mode: Magical, minibuffer-based file and buffer selection.
-(require 'ido)
-(ido-mode t)
+;(require 'ido)
+;(ido-mode t)
+
+;; icicles:.
+(require 'icicles)
+(icy-mode 1)
 
 ;; YASnippet.
 (add-to-list 'load-path
