@@ -12,12 +12,16 @@
 ;; Don't auto insert empty lines at file end.
 (setq-default next-line-add-newlines nil)
 
-;; Scroll bar position.
+;; Scrollbar position.
 (set-scroll-bar-mode 'right)
 
 ;; uniquify: Pick up buffer names smartly for buffers with the same
 ;; file name but different directories.
 (require 'uniquify)
+
+;; Autopair.
+(require 'autopair)
+(autopair-global-mode)
 
 ;; ido mode: Magical, minibuffer-based file and buffer selection.
 ;(require 'ido)
