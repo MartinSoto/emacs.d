@@ -240,4 +240,6 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 95 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
+ '(flymake-errline ((((class color) (background light)) (:underline "darkred"))))
+ '(flymake-warnline ((((class color) (background light)) (:underline "blue"))))
  '(mumamo-background-chunk-major ((((class color) (min-colors 88) (background light)) (:background "white")))))
