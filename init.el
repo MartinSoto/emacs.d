@@ -3,6 +3,13 @@
 ;; Personal elisp directory.
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+;; Customized major modes.
+(setq auto-mode-alist
+      (append
+       ; Chameleon templates.
+       '(("\\.pt\\'" . nxhtml-mode))
+       auto-mode-alist))
+
 ;; Some enabled operations.
 (put 'narrow-to-region 'disabled nil)
 (put 'eval-expression 'disabled nil)
