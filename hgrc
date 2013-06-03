@@ -1,0 +1,38 @@
+[ui]
+username = Martin Soto <msoto@eleven.de>
+editor = gedit
+merge = emacs
+
+[auth]
+elv.prefix = https://vsvn.intern.eleven.de/hg
+elv.username = msoto
+elv2.prefix = http://192.168.1.57/hg
+elv2.username = msoto
+
+[merge-tools]
+#emacs.args = -q --eval "(emerge-files-with-ancestor nil \"$local\" \"$other\" \"$base\" \"$output\" nil 'kill-emacs)"
+emacs.args = -q --eval "(ediff-merge-with-ancestor \"$local\" \"$other\" \"$base\" nil \"$output\")"
+
+[defaults]
+
+# 'hg status' show only the modified files
+#status = -m
+
+# hg revert does not leave backup files
+revert = --no-backup
+
+[extensions]
+extdiff =
+transplant =
+convert=
+mq=
+hgext.mercurial_keyring = /usr/local/lib/python2.7/dist-packages/mercurial_keyring.py
+#hgshelve=/home/msoto/Desktop/Projects/hgshelve/hgshelve.py
+#hgext.kerberos=/home/msoto/opt/hgext/kerberos.py
+
+[extdiff]
+cmd.kdiff3 =
+
+[web]
+cacerts=
+
