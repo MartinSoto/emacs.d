@@ -1,5 +1,13 @@
 ;; -*- emacs-lisp -*-
 
+;; Useful elisp functions
+;; TODO: Move to a separate file.
+
+(defun camelcase-to-constant (s)
+  (upcase (let ((case-fold-search nil))
+            (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1_\\2" s))))
+
+
 ;; Personal elisp directory.
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
