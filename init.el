@@ -47,6 +47,12 @@
 
 ;; Autopair.
 (require 'autopair)
+; Fix Python triple quouting.
+(add-hook 'python-mode-hook
+          #'(lambda ()
+              (setq autopair-handle-action-fns
+                    (list #'autopair-default-handle-action
+                          #'autopair-python-triple-quote-action))))
 (autopair-global-mode)
 
 ;; ido mode: Magical, minibuffer-based file and buffer selection.
