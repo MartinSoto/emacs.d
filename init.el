@@ -159,7 +159,7 @@
            (local-file (file-relative-name
                         temp-file
                         (file-name-directory buffer-file-name))))
-      (list "~/.emacs.d/node_modules/.bin/jslint" (list "--terse" "--nomen" "--white" local-file))))
+      (list "~/.emacs.d/node_modules/.bin/jslint" (list "--terse" "--nomen" "--white" "--vars" local-file))))
 
   (setq flymake-err-line-patterns
 	(cons '("^\\(.*\\)(\\([[:digit:]]+\\)):\\(.*\\)$"
