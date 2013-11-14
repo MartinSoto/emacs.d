@@ -47,7 +47,7 @@
 
 ;; Autopair.
 (require 'autopair)
-; Fix Python triple quouting.
+; Fix Python triple quoting.
 (add-hook 'python-mode-hook
           #'(lambda ()
               (setq autopair-handle-action-fns
@@ -114,6 +114,11 @@
         (yas/current-snippet-table))))
      (if table
          (ac-yasnippet-candidate-1 table)))))))
+
+;; python-mode.el.
+(add-to-list 'load-path "~/.emacs.d/lisp/python-mode")
+(setq py-install-directory "~/.emacs.d/lisp/python-mode")
+(require 'python-mode)
 
 ;; Add our emacs Python directory to PYTHONPATH. It contains the
 ;; Pymacs and rope packages.
