@@ -120,6 +120,9 @@
 (setq py-install-directory "~/.emacs.d/lisp/python-mode")
 (require 'python-mode)
 
+;; cython-mode.el.
+(require 'cython-mode)
+
 ;; Add our emacs Python directory to PYTHONPATH. It contains the
 ;; Pymacs and rope packages.
 (setenv "PYTHONPATH"
