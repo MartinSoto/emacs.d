@@ -233,10 +233,10 @@
 ;; (define-key python-rst-mumamo-mode-map (kbd "<f8>") 'python-docstring-py)
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(add-log-full-name "Martin Soto")
  '(add-log-mailing-address "martinsoto@users.sourceforge.net")
  '(c-offsets-alist (quote ((statement-case-intro . 4) (statement-case-open . 0) (case-label . 0) (arglist-intro . 4) (arglist-cont-nonempty . 4))))
@@ -264,7 +264,6 @@
  '(crypt-no-extension-implies-plain t)
  '(crypt-query-if-interactive t)
  '(debian-changelog-mailing-address "donsoto@gmail.com")
- '(desktop-save (quote if-exists))
  '(desktop-save-mode t)
  '(global-auto-revert-mode t)
  '(global-whitespace-mode nil)
@@ -275,10 +274,10 @@
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  '(x-select-enable-clipboard t))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 95 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
  '(flymake-errline ((((class color) (background light)) (:underline "darkred"))))
  '(flymake-warnline ((((class color) (background light)) (:underline "blue"))))
