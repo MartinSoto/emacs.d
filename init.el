@@ -115,11 +115,6 @@
      (if table
          (ac-yasnippet-candidate-1 table)))))))
 
-;; python-mode.el.
-(add-to-list 'load-path "~/.emacs.d/lisp/python-mode")
-(setq py-install-directory "~/.emacs.d/lisp/python-mode")
-(require 'python-mode)
-
 ;; cython-mode.el.
 (require 'cython-mode)
 
