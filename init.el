@@ -260,6 +260,7 @@
  '(crypt-query-if-interactive t)
  '(debian-changelog-mailing-address "donsoto@gmail.com")
  '(desktop-path (quote (".")))
+ '(desktop-restore-eager 5)
  '(desktop-save-mode 1)
  '(global-auto-revert-mode t)
  '(global-whitespace-mode nil)
