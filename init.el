@@ -11,6 +11,9 @@
 ;; Personal elisp directory.
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+;; Fix dead keys.
+(require 'iso-transl)
+
 ;; Customized major modes.
 (setq auto-mode-alist
       (append
