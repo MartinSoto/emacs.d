@@ -10,8 +10,7 @@ elv2.prefix = http://192.168.1.57/hg
 elv2.username = msoto
 
 [merge-tools]
-#emacs.args = -q --eval "(emerge-files-with-ancestor nil \"$local\" \"$other\" \"$base\" \"$output\" nil 'kill-emacs)"
-emacs.args = -q --eval "(ediff-merge-with-ancestor \"$local\" \"$other\" \"$base\" nil \"$output\")"
+emacs.args = -q --eval "(ediff-merge-with-ancestor \""$local"\" \""$other"\" \""$base"\" nil \""$output"\")"
 
 [defaults]
 
@@ -30,6 +29,9 @@ rebase=
 hgext.mercurial_keyring = /usr/local/lib/python2.7/dist-packages/mercurial_keyring.py
 #hgshelve=/home/msoto/Desktop/Projects/hgshelve/hgshelve.py
 #hgext.kerberos=/home/msoto/opt/hgext/kerberos.py
+mercurial_keyring =
+hgext.bookmarks =
+hgext.git =
 
 [extdiff]
 cmd.kdiff3 =
@@ -40,3 +42,6 @@ cacerts=
 [hostfingerprints]
 vsvn.intern.eleven.de = 22:b8:9b:6e:56:df:87:bd:e7:52:e4:45:f8:83:c7:27:ba:ef:b9:2f
 192.168.1.57 = 22:b8:9b:6e:56:df:87:bd:e7:52:e4:45:f8:83:c7:27:ba:ef:b9:2f
+
+[tortoisehg]
+vdiff = meld
