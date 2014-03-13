@@ -26,6 +26,15 @@
 ;; Don't auto insert empty lines at file end.
 (setq-default next-line-add-newlines nil)
 
+;; Desktop save/auto-save.
+(require 'desktop)
+(defun custom-desktop-save ()
+  (interactive)
+  ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
+  (if (eq (desktop-owner) (emacs-pid))
+      (desktop-save desktop-dirname)))
+(add-hook 'auto-save-hook 'custom-desktop-save) '(desktop-path (quote (".")))
+
 ;; Highlight trailing whitespace.
 (setq-default show-trailing-whitespace t)
 ; ...but not in the completions buffer.
