@@ -11,6 +11,9 @@
 ;; Personal elisp directory.
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+;; Remove the toolbar.
+(tool-bar-mode 0)
+
 ;; Fix dead keys.
 (require 'iso-transl)
 
