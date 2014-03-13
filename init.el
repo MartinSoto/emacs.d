@@ -15,11 +15,11 @@
 (require 'iso-transl)
 
 ;; Customized major modes.
-(setq auto-mode-alist
-      (append
-       ; Chameleon templates.
-       '(("\\.pt\\'" . nxhtml-mode))
-       auto-mode-alist))
+;; (setq auto-mode-alist
+;;       (append
+;;        ; Chameleon templates.
+;;        '(("\\.pt\\'" . nxhtml-mode))
+;;        auto-mode-alist))
 
 ;; Some enabled operations.
 (put 'narrow-to-region 'disabled nil)
@@ -145,10 +145,6 @@
           (lambda ()
 	    (add-to-list 'ac-sources 'ac-source-ropemacs)))
 
-;; nXhtml
-(load "~/.emacs.d/lisp/nxhtml/autostart.el")
-(setq debug-on-error nil)
-
 ;; CoffeeScript mode.
 (require 'coffee-mode)
 (add-hook 'coffee-mode-hook
@@ -184,50 +180,6 @@
 
 ;; ;; Docstring edit
 ;; (load "/home/soto/Desktop/Projects/rdf-devel/docedit/docedit.el")
-
-;; ;; Python + ReST with nxHtml's MuMaMo
-;; (defun python-long-string (pos min max)
-;;   "Find Python long strings.  Return range and 'mumamo-comment-mode.
-;; See `mumamo-find-possible-chunk' for POS, MIN and MAX."
-;;   (mumamo-quick-static-chunk pos min max "#<<<" "#>>>" t 'rst-mode t))
-
-;; (define-mumamo-multi-major-mode python-rst-mumamo-mode
-;;   "Turn on multiple major modes for Python with RestructuredText docstrings."
-;;   ("Python ReST Family" python-mode
-;;    (python-long-string)))
-
-;; (defun python-docstring-rst ()
-;;   "Mark the docstring containing the point as a ReST region."
-;;   (interactive)
-;;   (unless (eq major-mode 'python-rst-mumamo-mode)
-;;     (python-rst-mumamo-mode))
-;;   (save-excursion
-;;     (search-backward "\"\"\"")
-;;     (beginning-of-line)
-;;     (insert "#<<<\n"))
-;;   (save-excursion
-;;     (search-forward "\"\"\"")
-;;     (insert "#>>>")))
-
-;; (defun python-docstring-py ()
-;;   "Remove the ReST region marks around a docstring."
-;;   (interactive)
-;;   (unless (eq major-mode 'python-rst-mumamo-mode)
-;;     (python-rst-mumamo-mode))
-;;   (save-excursion
-;;     (search-backward "#<<<\n")
-;;     (delete-char 5))
-;;   (save-excursion
-;;     (search-forward "#>>>")
-;;     (delete-backward-char 4)))
-
-;; (defun add-python-mumamo-keys ()
-;;   (define-key python-mode-map (kbd "<f7>") 'python-docstring-rst)
-;;   (define-key python-mode-map (kbd "<f8>") 'python-docstring-py))
-;; (add-hook 'python-mode-hook 'add-python-mumamo-keys)
-
-;; (define-key python-rst-mumamo-mode-map (kbd "<f7>") 'python-docstring-rst)
-;; (define-key python-rst-mumamo-mode-map (kbd "<f8>") 'python-docstring-py)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
