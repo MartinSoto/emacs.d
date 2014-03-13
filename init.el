@@ -14,13 +14,6 @@
 ;; Fix dead keys.
 (require 'iso-transl)
 
-;; Customized major modes.
-;; (setq auto-mode-alist
-;;       (append
-;;        ; Chameleon templates.
-;;        '(("\\.pt\\'" . nxhtml-mode))
-;;        auto-mode-alist))
-
 ;; Some enabled operations.
 (put 'narrow-to-region 'disabled nil)
 (put 'eval-expression 'disabled nil)
@@ -144,6 +137,18 @@
 (add-hook 'python-mode-hook
           (lambda ()
 	    (add-to-list 'ac-sources 'ac-source-ropemacs)))
+
+;; Web mode
+(require 'web-mode)
+(defun web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 4)
+  (setq web-mode-code-indent-offset 4)
+)
+(add-hook 'web-mode-hook  'web-mode-hook)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.pt\\'" . web-mode))
 
 ;; CoffeeScript mode.
 (require 'coffee-mode)
