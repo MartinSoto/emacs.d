@@ -42,6 +42,11 @@
           (lambda ()
 	    (setq show-trailing-whitespace nil)))
 
+;; Whitespace cleanup settings.
+(setq whitespace-style (quote
+  (face tabs spaces trailing lines space-before-tab newline indentation:space empty
+        space-after-tab space-mark tab-mark newline-mark)))
+
 ;; Scrollbar position.
 (set-scroll-bar-mode 'right)
 
