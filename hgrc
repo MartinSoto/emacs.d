@@ -45,3 +45,7 @@ vsvn.intern.eleven.de = 22:b8:9b:6e:56:df:87:bd:e7:52:e4:45:f8:83:c7:27:ba:ef:b9
 
 [tortoisehg]
 vdiff = meld
+
+
+[diff]
+ignorews = True
