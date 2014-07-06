@@ -48,4 +48,3 @@ vdiff = meld
 
 
 [diff]
-ignorews = True
