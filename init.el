@@ -200,6 +200,13 @@
             (flymake-mode 1)
             (define-key js-mode-map "\C-c\C-n" 'flymake-goto-next-error)))
 
+;; Markdown mode.
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
 ;; ;; Docstring edit
 ;; (load "/home/soto/Desktop/Projects/rdf-devel/docedit/docedit.el")
 
