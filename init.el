@@ -178,28 +178,32 @@
 
 ;; Flymake:
 
-;; Flymake for JavaScript (http://lapin-bleu.net/riviera/?p=191).
+;; Flymake for JavaScript (based on https://github.com/jegbjerg/flymake-node-jshint/blob/master/flymake-node-jshint.el).
 (when (load "flymake" t)
-  (defun flymake-jslint-init ()
+  (defun flymake-jshint-init ()
     (let* ((temp-file (flymake-init-create-temp-buffer-copy
-		       'flymake-create-temp-inplace))
+                       'flymake-create-temp-inplace))
            (local-file (file-relative-name
                         temp-file
                         (file-name-directory buffer-file-name))))
-      (list "~/.emacs.d/node_modules/.bin/jslint" (list "--terse" "--nomen" "--white" "--vars" local-file))))
+      (list "~/.emacs.d/node_modules/.bin/jsxhint" (list "--jsx-only" local-file))))
 
   (setq flymake-err-line-patterns
-	(cons '("^\\(.*\\)(\\([[:digit:]]+\\)):\\(.*\\)$"
-		1 2 nil 3)
-	      flymake-err-line-patterns))
+        (cons '(".*: line \\([[:digit:]]+\\), col \\([[:digit:]]+\\), \\(.*\\)$"
+                nil 1 2 3)
+              flymake-err-line-patterns))
 
   (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.js\\'" flymake-jslint-init))
+               '("\\.js\\'" flymake-jshint-init))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.jsx\\'" flymake-jshint-init))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.json\\'" flymake-jshint-init))
 
   (require 'flymake-cursor)
 )
 
-(add-hook 'js-mode-hook
+(add-hook 'js2-mode-hook
 	  (lambda ()
             (flymake-mode 1)
             (define-key js-mode-map "\C-c\C-n" 'flymake-goto-next-error)))
