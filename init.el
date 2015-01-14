@@ -155,6 +155,10 @@
           (lambda ()
 	    (add-to-list 'ac-sources 'ac-source-ropemacs)))
 
+;; js2-mode for JavaScript (and React´s JSX)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . js2-mode))
+
 ;; Web mode
 (require 'web-mode)
 (defun web-mode-hook ()
