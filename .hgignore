@@ -8,3 +8,6 @@ auto-save-list/*
 *.pyc
 ac-comphist.dat
 lisp/nxhtml/etc/schema/xhtml-loader.rnc
+elpa/archives/*/archive-contents
+bookmarks
+image-dired/
