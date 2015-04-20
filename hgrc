@@ -26,7 +26,7 @@ transplant =
 convert=
 mq=
 rebase=
-mercurial_keyring =
+#mercurial_keyring =
 hgext.bookmarks =
 hgext.git =
 
