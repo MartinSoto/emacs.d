@@ -216,6 +216,9 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
+;; Magit.
+(setq magit-last-seen-setup-instructions "1.4.0")
+
 ;; ;; Docstring edit
 ;; (load "/home/soto/Desktop/Projects/rdf-devel/docedit/docedit.el")
 
