@@ -244,7 +244,7 @@
  ;; If there is more than one, they won't work right.
  '(add-log-full-name "Martin Soto")
  '(add-log-mailing-address "martinsoto@users.sourceforge.net")
- '(c-offsets-alist (quote ((statement-case-intro . 4) (statement-case-open . 0) (case-label . 0) (arglist-intro . 4) (arglist-cont-nonempty . 4))))
+ '(c-offsets-alist (quote ((statement-case-intro . 4) (statement-case-open . 0) (case-label . 0) (arglist-intro . 4) (arglist-cont c-lineup-gcc-asm-reg 0))))
  '(compilation-scroll-output (quote first-error))
  '(cperl-indent-level 4)
  '(crypt-auto-decode-buffer t)
