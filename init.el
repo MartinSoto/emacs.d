@@ -108,8 +108,6 @@
                           #'autopair-python-triple-quote-action))))
 (autopair-global-mode)
 
-(elpy-enable)
-
 ;; ;; YASnippet.
 ;; (add-to-list 'load-path
 ;;               "~/.emacs.d/lisp/yasnippet")
@@ -161,30 +159,19 @@
 ;;      (if table
 ;;          (ac-yasnippet-candidate-1 table)))))))
 
-;; ;; Add our emacs Python directory to PYTHONPATH. It contains the
-;; ;; Pymacs and rope packages.
-;; (setenv "PYTHONPATH"
-;;         (let ((python-path (getenv "PYTHONPATH"))
-;;               (local-path (concat (getenv "HOME") "/.emacs.d/python")))
-;;           (if python-path
-;;               (concat local-path path-separator python-path)
-;;             local-path)))
+;; Python Elpy.
+(elpy-enable)
 
-;; ;; Pymacs.
-;; (autoload 'pymacs-apply "pymacs")
-;; (autoload 'pymacs-call "pymacs")
-;; (autoload 'pymacs-eval "pymacs" nil t)
-;; (autoload 'pymacs-exec "pymacs" nil t)
-;; (autoload 'pymacs-load "pymacs" nil t)
-;; (autoload 'pymacs-autoload "pymacs")
+(setq python-check-command (concat (getenv "HOME") "/.emacs.d/python/bin/pyflakes"))
 
-;; ;; Ropemacs.
-;; (pymacs-load "ropemacs" "rope-")
-;; ; Use rope as completion source for Python.
-;; (ac-ropemacs-initialize)
-;; (add-hook 'python-mode-hook
-;;           (lambda ()
-;; 	    (add-to-list 'ac-sources 'ac-source-ropemacs)))
+;; Add our emacs Python directory to PYTHONPATH. It contains
+;; all Elpy dependencies.
+(setenv "PYTHONPATH"
+        (let ((python-path (getenv "PYTHONPATH"))
+              (local-path (concat (getenv "HOME") "/.emacs.d/python/lib/python2.7/site-packages")))
+          (if python-path
+              (concat local-path path-separator python-path)
+            local-path)))
 
 ;; js2-mode for JavaScript (and React´s JSX)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))

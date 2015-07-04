@@ -1,8 +1,0 @@
-../ropemacs/__init__.py
-../ropemacs/__init__.pyc
-./
-dependency_links.txt
-top_level.txt
-requires.txt
-PKG-INFO
-SOURCES.txt
