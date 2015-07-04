@@ -200,11 +200,6 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.pt\\'" . web-mode))
 
-;; CoffeeScript mode.
-;; (require 'coffee-mode)
-;; (add-hook 'coffee-mode-hook
-;;   '(lambda() (set (make-local-variable 'tab-width) 4)))
-
 ;; Flymake:
 
 ;; Flymake for JavaScript (based on https://github.com/jegbjerg/flymake-node-jshint/blob/master/flymake-node-jshint.el).
