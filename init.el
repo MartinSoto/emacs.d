@@ -94,10 +94,6 @@
 
 ;; End of Helm configuration.
 
-;; Display transient windows as "popups".
-(require 'popwin)
-(popwin-mode 1)
-
 ;; uniquify: Pick up buffer names smartly for buffers with the same
 ;; file name but different directories.
 (require 'uniquify)
