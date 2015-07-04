@@ -12,3 +12,4 @@ elpa/archives/*/archive-contents
 bookmarks
 image-dired/
 history
+target/*
