@@ -80,10 +80,6 @@
                           #'autopair-python-triple-quote-action))))
 (autopair-global-mode)
 
-;; ido mode: Magical, minibuffer-based file and buffer selection.
-;(require 'ido)
-;(ido-mode t)
-
 ;; YASnippet.
 (add-to-list 'load-path
               "~/.emacs.d/lisp/yasnippet")
