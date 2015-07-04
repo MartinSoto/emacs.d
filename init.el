@@ -84,10 +84,6 @@
 ;(require 'ido)
 ;(ido-mode t)
 
-;; icicles:.
-(require 'icicles)
-(icy-mode 1)
-
 ;; YASnippet.
 (add-to-list 'load-path
               "~/.emacs.d/lisp/yasnippet")
