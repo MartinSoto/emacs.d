@@ -189,37 +189,30 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.pt\\'" . web-mode))
 
-;; Flymake:
+;; Flycheck:
 
-;; Flymake for JavaScript (based on https://github.com/jegbjerg/flymake-node-jshint/blob/master/flymake-node-jshint.el).
-(when (load "flymake" t)
-  (defun flymake-jshint-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list "~/.emacs.d/node_modules/.bin/jsxhint" (list "--jsx-only" local-file))))
+;; use web-mode for .jsx files
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 
-  (setq flymake-err-line-patterns
-        (cons '(".*: line \\([[:digit:]]+\\), col \\([[:digit:]]+\\), \\(.*\\)$"
-                nil 1 2 3)
-              flymake-err-line-patterns))
+;; http://www.flycheck.org/manual/latest/index.html
+(require 'flycheck)
 
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.js\\'" flymake-jshint-init))
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.jsx\\'" flymake-jshint-init))
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.json\\'" flymake-jshint-init))
+;; turn on flychecking globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
-  (require 'flymake-cursor)
-)
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
 
-(add-hook 'js2-mode-hook
-	  (lambda ()
-            (flymake-mode 1)
-            (define-key js-mode-map "\C-c\C-n" 'flymake-goto-next-error)))
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
 
 ;; Ensime for Scala
 (require 'ensime)
