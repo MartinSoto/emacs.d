@@ -62,6 +62,9 @@
 ;; Scrollbar position.
 (set-scroll-bar-mode 'right)
 
+;; Theme.
+(load-theme 'leuven t)
+
 ;;
 ;; Helm
 ;;
@@ -261,6 +264,7 @@
  '(crypt-never-ever-decrypt nil)
  '(crypt-no-extension-implies-plain t)
  '(crypt-query-if-interactive t)
+ '(custom-safe-themes (quote ("9e1e2e7590c2f443c09a3f6240a05ada53f06566a6873c37eeae10d13dc372c9" default)))
  '(debian-changelog-mailing-address "donsoto@gmail.com")
  '(desktop-path (quote (".")))
  '(desktop-restore-eager 5)
