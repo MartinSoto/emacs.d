@@ -286,4 +286,7 @@
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 95 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
  '(flymake-errline ((((class color) (background light)) (:underline "darkred"))))
  '(flymake-warnline ((((class color) (background light)) (:underline "blue"))))
- '(mumamo-background-chunk-major ((((class color) (min-colors 88) (background light)) (:background "white")))))
+ '(mumamo-background-chunk-major ((((class color) (min-colors 88) (background light)) (:background "white"))) t)
+ '(web-mode-html-attr-name-face ((t (:inherit font-lock-variable-name-face))))
+ '(web-mode-html-tag-bracket-face ((t (:inherit font-lock-comment-face))))
+ '(web-mode-html-tag-face ((t (:inherit font-lock-function-name-face :weight bold)))))
