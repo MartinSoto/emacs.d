@@ -19,9 +19,6 @@
             (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1_\\2" s))))
 
 
-;; Personal elisp directory.
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-
 ;; Remove the toolbar.
 (tool-bar-mode 0)
 
@@ -178,7 +175,6 @@
 
 ;; js2-mode for JavaScript (and React´s JSX)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . js2-mode))
 
 ;; Web mode
 (require 'web-mode)
