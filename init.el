@@ -131,6 +131,8 @@
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 (add-to-list 'interpreter-mode-alist '("node" . js2-jsx-mode))
 
+(add-hook 'js2-mode-hook 'ac-js2-mode)
+
 ;; Web mode
 (require 'web-mode)
 (defun web-mode-hook ()
