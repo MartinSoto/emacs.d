@@ -1,5 +1,8 @@
 ;; -*- emacs-lisp -*-
 
+;; Fix broken encoding.
+(define-coding-system-alias 'UTF-8 'utf-8)
+
 ;; Useful elisp functions
 ;; TODO: Move to a separate file.
 
