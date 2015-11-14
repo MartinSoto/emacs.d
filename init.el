@@ -127,6 +127,9 @@
 
 ;; js2-mode for JavaScript (and React´s JSX)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx?\\'" . js2-jsx-mode))
+(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+(add-to-list 'interpreter-mode-alist '("node" . js2-jsx-mode))
 
 ;; Web mode
 (require 'web-mode)
@@ -139,7 +142,6 @@
 (add-hook 'web-mode-hook  'web-mode-hook)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.pt\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 
 
 ;; Flycheck:
@@ -155,8 +157,9 @@
               (append flycheck-disabled-checkers
                       '(javascript-jshint)))
 
-;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+;; Use eslint with js2-mode for js and jsx files.
+(flycheck-add-mode 'javascript-eslint 'js2-mode)
+(flycheck-add-mode 'javascript-eslint 'js2-jsx-mode)
 
 ;; disable json-jsonlist checking for json files
 (setq-default flycheck-disabled-checkers
