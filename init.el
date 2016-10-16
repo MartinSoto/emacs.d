@@ -253,3 +253,4 @@
  '(web-mode-html-attr-name-face ((t (:inherit font-lock-variable-name-face))))
  '(web-mode-html-tag-bracket-face ((t (:inherit font-lock-comment-face))))
  '(web-mode-html-tag-face ((t (:inherit font-lock-function-name-face :weight bold)))))
+(put 'scroll-left 'disabled nil)
