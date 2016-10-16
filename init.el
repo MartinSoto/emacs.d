@@ -240,6 +240,7 @@
  '(global-auto-revert-mode t)
  '(global-whitespace-mode nil)
  '(indent-tabs-mode nil)
+ '(js-indent-level 2)
  '(js2-basic-offset 2)
  '(nil nil t)
  '(savehist-mode t)
