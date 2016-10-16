@@ -237,6 +237,7 @@
  '(global-auto-revert-mode t)
  '(global-whitespace-mode nil)
  '(indent-tabs-mode nil)
+ '(js2-basic-offset 2)
  '(nil nil t)
  '(savehist-mode t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
