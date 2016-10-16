@@ -114,6 +114,9 @@
                           #'autopair-python-triple-quote-action))))
 (autopair-global-mode)
 
+;; Auto-complete.
+(require 'auto-complete)
+
 ;; Python Elpy.
 (elpy-enable)
 
