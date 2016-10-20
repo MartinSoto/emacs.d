@@ -117,6 +117,13 @@
 ;; Auto-complete.
 (require 'auto-complete)
 
+;; Projectile.
+(require 'projectile)
+(projectile-mode)
+
+(require 'helm-projectile)
+(helm-projectile-on)
+
 ;; Python Elpy.
 (elpy-enable)
 

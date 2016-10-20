@@ -12,3 +12,4 @@ image-dired/
 history
 target/*
 /.emacs.desktop
+/projectile-bookmarks.eld
