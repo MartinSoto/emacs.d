@@ -28,6 +28,12 @@
 ;; Fix dead keys.
 (require 'iso-transl)
 
+;; Fix the Mac keyboard.
+(when (eq system-type 'darwin)
+  (setq mac-command-modifier 'meta)
+  (setq mac-right-command-modifier 'meta)
+  (setq mac-right-option-modifier 'control))
+
 ;; Some enabled operations.
 (put 'narrow-to-region 'disabled nil)
 (put 'eval-expression 'disabled nil)
