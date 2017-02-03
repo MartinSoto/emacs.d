@@ -251,6 +251,7 @@
      (case-label . 0)
      (arglist-intro . 4)
      (arglist-cont c-lineup-gcc-asm-reg 0))))
+ '(cider-lein-parameters "repl :headless :host 0.0.0.0 :port 7788")
  '(compilation-scroll-output (quote first-error))
  '(cperl-indent-level 4)
  '(crypt-auto-decode-buffer t)
