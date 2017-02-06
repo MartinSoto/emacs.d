@@ -219,6 +219,19 @@
               (append flycheck-disabled-checkers
                       '(json-jsonlist)))
 
+;; emacs-eclim for Java.
+(require 'eclim)
+(setq eclimd-autostart t)
+(global-eclim-mode)
+
+(custom-set-variables
+  '(eclim-eclipse-dirs '("~/eclipse/java-neon/Eclipse.app/Contents/Eclipse"))
+  '(eclim-executable "~/eclipse/java-neon/Eclipse.app/Contents/Eclipse/eclim"))
+
+(require 'company)
+(require 'company-emacs-eclim)
+(company-emacs-eclim-setup)
+(global-company-mode t)
 
 ;; Ensime for Scala
 (require 'ensime)
