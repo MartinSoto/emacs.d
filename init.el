@@ -110,15 +110,8 @@
 ;; file name but different directories.
 (require 'uniquify)
 
-;; Autopair.
-(require 'autopair)
-; Fix Python triple quoting.
-(add-hook 'python-mode-hook
-          #'(lambda ()
-              (setq autopair-handle-action-fns
-                    (list #'autopair-default-handle-action
-                          #'autopair-python-triple-quote-action))))
-(autopair-global-mode)
+;; Electric pairing.
+(electric-pair-mode)
 
 ;; Auto-complete.
 (require 'auto-complete)
