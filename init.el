@@ -32,7 +32,10 @@
 (when (eq system-type 'darwin)
   (setq mac-command-modifier 'meta)
   (setq mac-right-command-modifier 'meta)
-  (setq mac-right-option-modifier 'control))
+  (setq mac-right-option-modifier 'control)
+
+  (global-set-key (kbd "<home>") 'beginning-of-line)
+  (global-set-key (kbd "<end>") 'end-of-line))
 
 ;; Some enabled operations.
 (put 'narrow-to-region 'disabled nil)
