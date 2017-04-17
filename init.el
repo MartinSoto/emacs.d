@@ -53,6 +53,9 @@
       (desktop-save desktop-dirname)))
 (run-at-time "2 min" 60 'my-desktop-save)
 
+;; Show matching parentheses.
+(show-paren-mode 1)
+
 ;; Highlight trailing whitespace.
 (setq-default show-trailing-whitespace t)
 ; ...but not in the completions buffer.
