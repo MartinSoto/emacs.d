@@ -214,8 +214,8 @@
 
 ;; emacs-eclim for Java.
 (require 'eclim)
-(setq eclimd-autostart t)
-(global-eclim-mode)
+;(setq eclimd-autostart t)
+;(global-eclim-mode)
 
 (custom-set-variables
   '(eclim-eclipse-dirs '("~/eclipse/java-neon/Eclipse.app/Contents/Eclipse"))
