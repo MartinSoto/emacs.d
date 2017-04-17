@@ -86,6 +86,15 @@ displayed.  When nil, always display eldoc for first symbol of the sexp."
   :group 'cider
   :package-version '(cider . "0.13.0"))
 
+(defcustom cider-eldoc-display-context-dependent-info nil
+  "When non-nil, display context dependent info in the eldoc where possible.
+CIDER will try to add expected function arguments based on the current context,
+for example for the datomic.api/q function where it will show the expected
+inputs of the query at point."
+  :type 'boolean
+  :group 'cider
+  :package-version '(cider . "0.15.0"))
+
 (defun cider--eldoc-format-class-names (class-names)
   "Return a formatted CLASS-NAMES prefix string.
 CLASS-NAMES is a list of classes to which a Java interop form belongs.
@@ -116,7 +125,7 @@ mapping `cider-eldoc-ns-function' on it returns an empty list."
      (t (format "%s" (car eldoc-class-names))))))
 
 (defun cider-eldoc-format-thing (ns symbol thing type)
-  "Format the eldoc subject defined by NS, SYMBOL and THING.
+  "Format the eldoc subject defined by NS, SYMBOL, THING and TYPE.
 THING represents the thing at point which triggered eldoc.  Normally NS and
 SYMBOL are used (they are derived from THING), but when empty we fallback to
 THING (e.g. for Java methods).  Format it as a function, if FUNCTION-P
@@ -294,7 +303,7 @@ if the maximum number of sexps to skip is exceeded."
     num-skipped-sexps))
 
 (defun cider-eldoc-thing-type (eldoc-info)
-  "Return the type of the thing being displayed by eldoc.
+  "Return the type of the ELDOC-INFO being displayed by eldoc.
 It can be a function or var now."
   (pcase (lax-plist-get eldoc-info "type")
     ("function" 'fn)
@@ -313,9 +322,9 @@ Then go back to the point and return its eldoc."
           (goto-char current-point)
           (when-let (eldoc-info (cider-eldoc-info
                                  (cider--eldoc-remove-dot (cider-symbol-at-point))))
-            (list "eldoc-info" eldoc-info
-                  "thing" (cider-symbol-at-point)
-                  "pos" 0)))))))
+            `("eldoc-info" ,eldoc-info
+              "thing" ,(cider-symbol-at-point)
+              "pos" 0)))))))
 
 (defun cider-eldoc-info-at-sexp-beginning ()
   "Return eldoc info for first symbol in the sexp."
@@ -328,9 +337,9 @@ Then go back to the point and return its eldoc."
                   (cider-in-comment-p))
         (when-let (eldoc-info (cider-eldoc-info
                                (cider--eldoc-remove-dot (cider-symbol-at-point))))
-          (list "eldoc-info" eldoc-info
-                "thing" (cider-symbol-at-point)
-                "pos" argument-index))))))
+          `("eldoc-info" ,eldoc-info
+            "thing" ,(cider-symbol-at-point)
+            "pos" ,argument-index))))))
 
 (defun cider-eldoc-info-in-current-sexp ()
   "Return eldoc information from the sexp.
@@ -398,10 +407,23 @@ This includes the arglist and ns and symbol name (if available)."
                                         "arglists" arglists
                                         "docstring" docstring
                                         "type" type)))
-                ;; middleware eldoc lookups are expensive, so we
-                ;; cache the last lookup.  This eliminates the need
-                ;; for extra middleware requests within the same sexp.
-                (setq cider-eldoc-last-symbol (list thing eldoc-plist))
+                ;; add context dependent args if requested by defcustom
+                ;; do not cache this eldoc info to avoid showing info
+                ;: of the previous context
+                (if cider-eldoc-display-context-dependent-info
+                    (cond
+                     ;; add inputs of datomic query
+                     ((and (equal ns-or-class "datomic.api")
+                           (equal name-or-member "q"))
+                      (let ((arglists (lax-plist-get eldoc-plist "arglists")))
+                        (lax-plist-put eldoc-plist "arglists"
+                                       (cider--eldoc-add-datomic-query-inputs-to-arglists arglists))))
+                     ;; if none of the clauses is successful, do cache the eldoc
+                     (t (setq cider-eldoc-last-symbol (list thing eldoc-plist))))
+                  ;; middleware eldoc lookups are expensive, so we
+                  ;; cache the last lookup.  This eliminates the need
+                  ;; for extra middleware requests within the same sexp.
+                  (setq cider-eldoc-last-symbol (list thing eldoc-plist)))
                 eldoc-plist))))))))
 
 (defun cider--eldoc-remove-dot (sym)
@@ -412,6 +434,24 @@ Only useful for interop forms.  Clojure forms would be returned unchanged."
 (defun cider--eldoc-edn-file-p (file-name)
   "Check whether FILE-NAME is representing an EDN file."
   (and file-name (equal (file-name-extension file-name) "edn")))
+
+(defun cider--eldoc-add-datomic-query-inputs-to-arglists (arglists)
+  "Add the expected inputs of the datomic query to the ARGLISTS."
+  (if (cider-second-sexp-in-list)
+    (let* ((query (cider-second-sexp-in-list))
+           (query-inputs (nrepl-dict-get
+                          (cider-sync-request:eldoc-datomic-query query)
+                          "inputs")))
+      (if query-inputs
+          (thread-first
+              (thread-last arglists
+                (car)
+                (remove "&")
+                (remove "inputs"))
+            (append (car query-inputs))
+            (list))
+        arglists))
+    arglists))
 
 (defun cider-eldoc ()
   "Backend function for eldoc to show argument list in the echo area."

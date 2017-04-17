@@ -529,30 +529,40 @@ key-values depending on the connection type."
         (nrepl--direct-connect (or host "localhost") port)
       ;; we're dealing with a remote host
       (if (and host (not nrepl-force-ssh-for-remote-hosts))
-          (nrepl--direct-connect host port 'no-error)
-        ;; direct connection failed or `nrepl-force-ssh-for-remote-hosts' is non-nil
-        (when (or nrepl-use-ssh-fallback-for-remote-hosts
-                  nrepl-force-ssh-for-remote-hosts)
-          (nrepl--ssh-tunnel-connect host port))))))
+          (or (nrepl--direct-connect host port 'no-error)
+              ;; direct connection failed
+              ;; fallback to ssh tunneling if enabled
+              (and nrepl-use-ssh-fallback-for-remote-hosts
+                   (message "[nREPL] Falling back to SSH tunneled connection ...")
+                   (nrepl--ssh-tunnel-connect host port))
+              ;; fallback is either not enabled or it failed as well
+              (error "[nREPL] Cannot connect to %s:%s" host port))
+        ;; `nrepl-force-ssh-for-remote-hosts' is non-nil
+        (nrepl--ssh-tunnel-connect host port)))))
 
 (defun nrepl--direct-connect (host port &optional no-error)
   "If HOST and PORT are given, try to `open-network-stream'.
 If NO-ERROR is non-nil, show messages instead of throwing an error."
   (if (not (and host port))
       (unless no-error
-        (error "Host (%s) and port (%s) must be provided" host port))
+        (when (not host)
+          (error "[nREPL] Host not provided"))
+        (when (not port)
+          (error "[nREPL] Port not provided")))
     (message "[nREPL] Establishing direct connection to %s:%s ..." host port)
     (condition-case nil
         (prog1 (list :proc (open-network-stream "nrepl-connection" nil host port)
                      :host host :port port)
-          (message "[nREPL] Direct connection established"))
-      (error (let ((mes "[nREPL] Direct connection failed"))
-               (if no-error (message mes) (error mes))
+          (message "[nREPL] Direct connection to %s:%s established" host port))
+      (error (let ((msg (format "[nREPL] Direct connection to %s:%s failed" host port)))
+               (if no-error
+                   (message msg)
+                 (error msg))
                nil)))))
 
 (defun nrepl--ssh-tunnel-connect (host port)
   "Connect to a remote machine identified by HOST and PORT through SSH tunnel."
-  (message "[nREPL] Establishing SSH tunneled connection ...")
+  (message "[nREPL] Establishing SSH tunneled connection to %s:%s ..." host port)
   (let* ((remote-dir (if host (format "/ssh:%s:" host) default-directory))
          (ssh (or (executable-find "ssh")
                   (error "[nREPL] Cannot locate 'ssh' executable")))
@@ -803,8 +813,7 @@ Return the ID of the sent message.
 Optional argument TOOLING Set to t if desiring the tooling session rather than the standard session."
   (with-current-buffer connection
     (when-let ((session (if tooling nrepl-tooling-session nrepl-session)))
-      (setq request (append request
-                            (list "session" session))))
+      (setq request (append request `("session" ,session))))
     (let* ((id (nrepl-next-request-id connection))
            (request (cons 'dict (lax-plist-put request "id" id)))
            (message (nrepl-bencode request)))
@@ -868,8 +877,8 @@ If TOOLING, use the tooling session rather than the standard session."
 (defun nrepl-request:stdin (input callback connection)
   "Send a :stdin request with INPUT using CONNECTION.
 Register CALLBACK as the response handler."
-  (nrepl-send-request (list "op" "stdin"
-                            "stdin" input)
+  (nrepl-send-request `("op" "stdin"
+                        "stdin" ,input)
                       callback
                       connection))
 
@@ -877,8 +886,8 @@ Register CALLBACK as the response handler."
   "Send an :interrupt request for PENDING-REQUEST-ID.
 The request is dispatched using CONNECTION.
 Register CALLBACK as the response handler."
-  (nrepl-send-request (list "op" "interrupt"
-                            "interrupt-id" pending-request-id)
+  (nrepl-send-request `("op" "interrupt"
+                        "interrupt-id" ,pending-request-id)
                       callback
                       connection))
 
@@ -890,16 +899,16 @@ Register CALLBACK as the response handler."
 NS provides context for the request.
 If LINE and COLUMN are non-nil and current buffer is a file buffer, \"line\",
 \"column\" and \"file\" are added to the message."
-  (append (and ns (list "ns" ns))
-          (list "op" "eval"
-                "code" input)
-          (when cider-enlighten-mode
-            (list "enlighten" "true"))
-          (let ((file (or (buffer-file-name) (buffer-name))))
-            (when (and line column file)
-              (list "file" file
-                    "line" line
-                    "column" column)))))
+  (nconc (and ns `("ns" ,ns))
+         `("op" "eval"
+           "code" ,input)
+         (when cider-enlighten-mode
+           '("enlighten" "true"))
+         (let ((file (or (buffer-file-name) (buffer-name))))
+           (when (and line column file)
+             `("file" ,file
+               "line" ,line
+               "column" ,column)))))
 
 (defun nrepl-request:eval (input callback connection &optional ns line column additional-params tooling)
   "Send the request INPUT and register the CALLBACK as the response handler.
@@ -924,10 +933,8 @@ Optional argument TOOLING Tooling is set to t if wanting the tooling session fro
 
 (defun nrepl-sync-request:close (connection)
   "Sent a :close request to close CONNECTION's SESSION."
-  (nrepl-send-sync-request (list "op" "close")
-                           connection)
-  (nrepl-send-sync-request (list "op" "close")
-                           connection nil t)) ;; close tooling session
+  (nrepl-send-sync-request '("op" "close") connection)
+  (nrepl-send-sync-request '("op" "close") connection nil t)) ;; close tooling session
 
 (defun nrepl-sync-request:describe (connection)
   "Perform :describe request for CONNECTION and SESSION."
@@ -1108,6 +1115,11 @@ operations.")
 TYPE is either request or response.  The message is logged to a buffer
 described by `nrepl-message-buffer-name-template'."
   (when nrepl-log-messages
+    ;; append a time-stamp to the message before logging it
+    ;; the time-stamps are quite useful for debugging
+    (setq msg (cons (car msg)
+                    (lax-plist-put (cdr msg) "time-stamp"
+                                   (format-time-string "%Y-%m-%0d %H:%M:%S.%N"))))
     (with-current-buffer (nrepl-messages-buffer (current-buffer))
       (setq buffer-read-only nil)
       (when (> (buffer-size) nrepl-message-buffer-max-size)
@@ -1206,18 +1218,29 @@ FOREGROUND and BUTTON are as in `nrepl-log-pp-object'."
                                        (when foreground `(:foreground ,foreground))))))
     (let ((head (format "(%s" (car object))))
       (insert (color head))
-      (let ((indent (+ 2 (- (current-column) (length head))))
-            (l (point)))
-        (if (null (cdr object))
-            (insert ")\n")
-          (insert " \n")
-          (cl-loop for l on (cdr object) by #'cddr
-                   do (let ((str (format "%s%s  " (make-string indent ?\s)
-                                         (propertize (car l) 'face
-                                                     ;; Only highlight top-level keys.
-                                                     (unless (eq (car object) 'dict)
-                                                       'font-lock-keyword-face)))))
-                        (insert str)
+      (if (null (cdr object))
+          (insert ")\n")
+        (let* ((indent (+ 2 (- (current-column) (length head))))
+               (sorted-pairs (sort (seq-partition (cl-copy-list (cdr object)) 2)
+                                   (lambda (a b)
+                                     (string< (car a) (car b)))))
+               (name-lengths (seq-map (lambda (pair) (length (car pair))) sorted-pairs))
+               (longest-name (seq-max name-lengths))
+               ;; Special entries are displayed first
+               (specialq (lambda (pair) (seq-contains '("id" "op" "session" "time-stamp") (car pair))))
+               (special-pairs (seq-filter specialq sorted-pairs))
+               (not-special-pairs (seq-remove specialq sorted-pairs))
+               (all-pairs (seq-concatenate 'list special-pairs not-special-pairs))
+               (sorted-object (apply 'seq-concatenate 'list all-pairs)))
+          (insert "\n")
+          (cl-loop for l on sorted-object by #'cddr
+                   do (let ((indent-str (make-string indent ?\s))
+                            (name-str (propertize (car l) 'face
+                                                  ;; Only highlight top-level keys.
+                                                  (unless (eq (car object) 'dict)
+                                                    'font-lock-keyword-face)))
+                            (spaces-str (make-string (- longest-name (length (car l))) ?\s)))
+                        (insert (format "%s%s%s " indent-str name-str spaces-str))
                         (nrepl-log-pp-object (cadr l) nil button)))
           (when (eq (car object) 'dict)
             (delete-char -1))

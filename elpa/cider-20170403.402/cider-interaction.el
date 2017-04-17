@@ -444,8 +444,8 @@ Invert meaning of `cider-prompt-for-symbol' if PREFIX indicates it should be."
 
 (defun cider-sync-request:ns-path (ns)
   "Get the path to the file containing NS."
-  (thread-first (list "op" "ns-path"
-                      "ns" ns)
+  (thread-first `("op" "ns-path"
+                  "ns" ,ns)
     cider-nrepl-send-sync-request
     (nrepl-dict-get "path")))
 
@@ -516,6 +516,8 @@ form, with symbol at point replaced by __prefix__."
       context)))
 
 (defun cider-completion--parse-candidate-map (candidate-map)
+  "Get \"candidate\" from CANDIDATE-MAP.
+Put type and ns properties on the candidate"
   (let ((candidate (nrepl-dict-get candidate-map "candidate"))
         (type (nrepl-dict-get candidate-map "type"))
         (ns (nrepl-dict-get candidate-map "ns")))
@@ -530,17 +532,20 @@ form, with symbol at point replaced by __prefix__."
     (mapcar #'cider-completion--parse-candidate-map candidates)))
 
 (defun cider-completion--get-candidate-type (symbol)
+  "Get candidate type for SYMBOL."
   (let ((type (get-text-property 0 'type symbol)))
     (or (cadr (assoc type cider-completion-annotations-alist))
         type)))
 
 (defun cider-completion--get-candidate-ns (symbol)
+  "Get candidate ns for SYMBOL."
   (when (or (eq 'always cider-completion-annotations-include-ns)
             (and (eq 'unqualified cider-completion-annotations-include-ns)
                  (not (cider-namespace-qualified-p symbol))))
     (get-text-property 0 'ns symbol)))
 
 (defun cider-default-annotate-completion-function (type ns)
+  "Get completion function based on TYPE and NS."
   (concat (when ns (format " (%s)" ns))
           (when type (format " <%s>" type))))
 
@@ -573,6 +578,15 @@ The formatting is performed by `cider-annotate-completion-function'."
             :company-location #'cider-company-location
             :company-docsig #'cider-company-docsig))))
 
+(defun cider-completion-flush-caches ()
+  "Force Compliment to refill its caches.
+
+This command should be used if Compliment fails to pick up new classnames
+and methods from dependencies that were loaded dynamically after the REPL
+has started."
+  (interactive)
+  (cider-sync-request:complete-flush-caches))
+
 (defun cider-company-location (var)
   "Open VAR's definition in a buffer.
 
@@ -602,8 +616,8 @@ in the buffer."
 
 ;; Fuzzy completion for company-mode
 
-(defun cider-company-unfiltered-candidates (string table predicate point)
-  "Return CIDER completion candidates as is, without filtering them by prefix."
+(defun cider-company-unfiltered-candidates (string &rest _)
+  "Return CIDER completion candidates for STRING as is, unfiltered."
   (cider-complete string))
 
 (add-to-list 'completion-styles-alist
@@ -679,6 +693,7 @@ REPL buffer.  This is controlled via
                          (current-buffer))
     (save-excursion
       (goto-char beg)
+      (remove-overlays beg end 'cider-fringe-indicator)
       (condition-case nil
           (while (progn (clojure-forward-logical-sexp)
                         (and (<= (point) end)
@@ -695,11 +710,14 @@ or it can be a list with (START END) of the evaluated region."
          (beg (car-safe place))
          (end (or (car-safe (cdr-safe place)) place))
          (beg (when beg (copy-marker beg)))
-         (end (when end (copy-marker end))))
+         (end (when end (copy-marker end)))
+         (fringed nil))
     (nrepl-make-response-handler (or buffer eval-buffer)
                                  (lambda (_buffer value)
                                    (if beg
-                                       (cider--make-fringe-overlays-for-region beg end)
+                                       (unless fringed
+                                         (cider--make-fringe-overlays-for-region beg end)
+                                         (setq fringed t))
                                      (cider--make-fringe-overlay end))
                                    (cider--display-interactive-eval-result value end))
                                  (lambda (_buffer out)
@@ -877,14 +895,13 @@ into a new error buffer."
   ;; Causes are returned as a series of messages, which we aggregate in `causes'
   (let (causes)
     (cider-nrepl-send-request
-     (append
-      (list "op" "stacktrace")
-      (when (cider--pprint-fn)
-        (list "pprint-fn" (cider--pprint-fn)))
-      (when cider-stacktrace-print-length
-        (list "print-length" cider-stacktrace-print-length))
-      (when cider-stacktrace-print-level
-        (list "print-level" cider-stacktrace-print-level)))
+     (nconc '("op" "stacktrace")
+            (when (cider--pprint-fn)
+              `("pprint-fn" ,(cider--pprint-fn)))
+            (when cider-stacktrace-print-length
+              `("print-length" ,cider-stacktrace-print-length))
+            (when cider-stacktrace-print-level
+              `("print-level" ,cider-stacktrace-print-level)))
      (lambda (response)
        ;; While the return value of `cider--handle-stacktrace-response' is not
        ;; meaningful for the last message, we do not need the value of `causes'
@@ -1157,7 +1174,7 @@ If invoked with a PREFIX argument, switch to the REPL buffer."
     (cider-switch-to-repl-buffer)))
 
 (defun cider-pprint-eval-last-sexp-to-repl (&optional prefix)
-  "Evaluate the expression preceding point and insert its pretty-printed result in the REPL.
+  "Evaluate expr before point and insert its pretty-printed result in the REPL.
 If invoked with a PREFIX argument, switch to the REPL buffer."
   (interactive "P")
   (let* ((conn-buffer (cider-current-connection)))
@@ -1275,7 +1292,7 @@ The point is placed next to the function name in the minibuffer to allow
 passing arguments."
   (interactive)
   (let* ((fn-name (cadr (split-string (cider-defun-at-point))))
-         (form (concat "(" fn-name ")")))
+         (form (format "(%s)" fn-name)))
     (cider-read-and-eval (cons form (length form)))))
 
 ;; Eval keymap
@@ -1319,7 +1336,7 @@ If invoked with a prefix ARG eval the expression after inserting it."
   (cider-insert-in-repl (cider-last-sexp) arg))
 
 (defun cider-insert-defun-in-repl (&optional arg)
-  "Insert the top-level form at point in the REPL buffer.
+  "Insert the top level form at point in the REPL buffer.
 If invoked with a prefix ARG eval the expression after inserting it."
   (interactive "P")
   (cider-insert-in-repl (cider-defun-at-point) arg))
@@ -1373,9 +1390,9 @@ See `cider-mode'."
 
 (defun cider-sync-request:toggle-trace-var (symbol)
   "Toggle var tracing for SYMBOL."
-  (thread-first (list "op" "toggle-trace-var"
-                      "ns" (cider-current-ns)
-                      "sym" symbol)
+  (thread-first `("op" "toggle-trace-var"
+                  "ns" ,(cider-current-ns)
+                  "sym" ,symbol)
     (cider-nrepl-send-sync-request)))
 
 (defun cider--toggle-trace-var (sym)
@@ -1402,8 +1419,8 @@ opposite of what that option dictates."
 
 (defun cider-sync-request:toggle-trace-ns (ns)
   "Toggle namespace tracing for NS."
-  (thread-first (list "op" "toggle-trace-ns"
-                      "ns" ns)
+  (thread-first `("op" "toggle-trace-ns"
+                  "ns" ,ns)
     (cider-nrepl-send-sync-request)))
 
 (defun cider-toggle-trace-ns (query)
@@ -1433,12 +1450,13 @@ Defaults to the current ns.  With prefix arg QUERY, prompts for a ns."
    "Undefine symbol: "
    (lambda (sym)
      (cider-nrepl-send-request
-      (list "op" "undef"
-            "ns" (cider-current-ns)
-            "symbol" sym)
+      `("op" "undef"
+        "ns" ,(cider-current-ns)
+        "symbol" ,sym)
       (cider-interactive-eval-handler (current-buffer))))))
 
 (defun cider-refresh--handle-response (response log-buffer)
+  "Refresh LOG-BUFFER with RESPONSE."
   (nrepl-dbind-response response (out err reloading status error error-ns after before)
     (cl-flet* ((log (message &optional face)
                     (cider-emit-into-popup-buffer log-buffer message face))
@@ -1522,16 +1540,17 @@ refresh functions (defined in `cider-refresh-before-fn' and
          (when inhibit-refresh-fns
            (cider-emit-into-popup-buffer log-buffer "inhibiting refresh functions\n"))
          (when clear?
-           (cider-nrepl-send-sync-request (list "op" "refresh-clear") conn))
+           (cider-nrepl-send-sync-request '("op" "refresh-clear") conn))
          (cider-nrepl-send-request
-          (append (list "op" (if refresh-all? "refresh-all" "refresh")
-                        "print-length" cider-stacktrace-print-length
-                        "print-level" cider-stacktrace-print-level)
-                  (when (cider--pprint-fn) (list "pprint-fn" (cider--pprint-fn)))
-                  (when (and (not inhibit-refresh-fns) cider-refresh-before-fn)
-                    (list "before" cider-refresh-before-fn))
-                  (when (and (not inhibit-refresh-fns) cider-refresh-after-fn)
-                    (list "after" cider-refresh-after-fn)))
+          (nconc `("op" ,(if refresh-all? "refresh-all" "refresh")
+                   "print-length" ,cider-stacktrace-print-length
+                   "print-level" ,cider-stacktrace-print-level)
+                 (when (cider--pprint-fn)
+                   `("pprint-fn" ,(cider--pprint-fn)))
+                 (when (and (not inhibit-refresh-fns) cider-refresh-before-fn)
+                   `("before" ,cider-refresh-before-fn))
+                 (when (and (not inhibit-refresh-fns) cider-refresh-after-fn)
+                   `("after" ,cider-refresh-after-fn)))
           (lambda (response)
             (cider-refresh--handle-response response log-buffer))
           conn)))
@@ -1808,7 +1827,8 @@ With a prefix argument, prompt for function to run instead of -main."
   (cider-ensure-connected)
   (let ((name (or function "-main")))
     (when-let ((response (cider-nrepl-send-sync-request
-                          (list "op" "ns-list-vars-by-name" "name" name))))
+                          `("op" "ns-list-vars-by-name"
+                            "name" ,name))))
       (if-let ((vars (split-string (substring (nrepl-dict-get response "var-list") 1 -1))))
           (cider-interactive-eval
            (if (= (length vars) 1)
