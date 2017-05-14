@@ -188,6 +188,10 @@
 
 (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
 
+;; Restart the system on refresh.
+(setq cider-refresh-before-fn "user/down"
+      cider-refresh-after-fn "user/up")
+
 ;; Web mode
 (require 'web-mode)
 (defun web-mode-hook ()
