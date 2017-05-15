@@ -189,8 +189,17 @@
 (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
 
 ;; Restart the system on refresh.
-(setq cider-refresh-before-fn "user/down"
-      cider-refresh-after-fn "user/up")
+(setq cider-refresh-before-fn "user/down")
+(defun cider-activate-system ()
+  (interactive)
+  (setq cider-refresh-after-fn "user/up")
+  (setq cider-refresh-show-log-buffer t)
+  (message "System is now active"))
+(defun cider-deactivate-system ()
+  (interactive)
+  (setq cider-refresh-after-fn nil)
+  (setq cider-refresh-show-log-buffer nil)
+  (message "System is now inactive"))
 
 ;; Web mode
 (require 'web-mode)
