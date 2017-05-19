@@ -244,19 +244,6 @@
               (append flycheck-disabled-checkers
                       '(json-jsonlist)))
 
-;; emacs-eclim for Java.
-(require 'eclim)
-;(setq eclimd-autostart t)
-;(global-eclim-mode)
-
-(custom-set-variables
-  '(eclim-eclipse-dirs '("~/eclipse/java-neon/Eclipse.app/Contents/Eclipse"))
-  '(eclim-executable "~/eclipse/java-neon/Eclipse.app/Contents/Eclipse/eclim"))
-
-(require 'company)
-(require 'company-emacs-eclim)
-(company-emacs-eclim-setup)
-(global-company-mode t)
 
 ;; Ensime for Scala
 (require 'ensime)
@@ -327,9 +314,12 @@
  '(js-indent-level 2)
  '(js2-basic-offset 2)
  '(nil nil t)
+ '(package-selected-packages
+   (quote
+    (yaml-mode web-mode tide swiper scala-mode2 markdown-mode magit leuven-theme json-mode helm-projectile helm-ag groovy-mode ensime elpy dockerfile-mode clj-refactor ag ac-js2 ac-cider)))
  '(savehist-mode t)
- '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
- '(x-select-enable-clipboard t))
+ '(select-enable-clipboard t)
+ '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
