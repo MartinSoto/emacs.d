@@ -324,7 +324,7 @@
  '(nil nil t)
  '(package-selected-packages
    (quote
-    (yaml-mode web-mode tide swiper scala-mode2 markdown-mode magit leuven-theme json-mode helm-projectile helm-ag groovy-mode ensime elpy dockerfile-mode clj-refactor ag ac-js2 ac-cider)))
+    (clojure-snippets yaml-mode web-mode tide swiper scala-mode2 markdown-mode magit leuven-theme json-mode helm-projectile helm-ag groovy-mode ensime elpy dockerfile-mode clj-refactor ag ac-js2 ac-cider)))
  '(savehist-mode t)
  '(select-enable-clipboard t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify)))
