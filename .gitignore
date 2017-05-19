@@ -13,3 +13,4 @@ history
 target/*
 /.emacs.desktop
 /projectile-bookmarks.eld
+/eclipse.jdt.ls
