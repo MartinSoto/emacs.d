@@ -246,13 +246,18 @@
                       '(json-jsonlist)))
 
 ;; Language Server Protocol (LSP) for Java
-(add-to-list 'load-path "~/.emacs.d/lsp/lsp-java")
-(add-to-list 'load-path "~/.emacs.d/lsp/lsp-mode")
-(with-eval-after-load 'lsp-mode
-    (require 'lsp-flycheck))
-(require 'lsp-java)
-(require 'lsp-mode)
-(add-hook 'java-mode-hook #'lsp-mode)
+;;
+;; Commented out because it still seems very immature. The approach is
+;; very promising, so it's worth a new try in the (hopefully near)
+;; future.
+;;
+;; (add-to-list 'load-path "~/.emacs.d/lsp/lsp-java")
+;; (add-to-list 'load-path "~/.emacs.d/lsp/lsp-mode")
+;; (with-eval-after-load 'lsp-mode
+;;     (require 'lsp-flycheck))
+;; (require 'lsp-java)
+;; (require 'lsp-mode)
+;; (add-hook 'java-mode-hook #'lsp-mode)
 
 ;; Markdown mode.
 (autoload 'markdown-mode "markdown-mode"
