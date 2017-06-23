@@ -189,6 +189,16 @@
 
 (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
 
+;; Meghanada for Java
+
+(require 'meghanada)
+
+(defun my-java-mode-hook ()
+  (meghanada-mode t))
+
+(add-hook 'java-mode-hook #'my-java-mode-hook)
+
+
 ;; Restart the system on refresh.
 (setq cider-refresh-before-fn "user/down")
 (defun cider-activate-system ()
@@ -326,7 +336,7 @@
  '(nil nil t)
  '(package-selected-packages
    (quote
-    (clojure-snippets yaml-mode web-mode tide swiper scala-mode2 markdown-mode magit leuven-theme json-mode helm-projectile helm-ag groovy-mode elpy dockerfile-mode clj-refactor ag ac-js2 ac-cider)))
+    (meghanada clojure-snippets yaml-mode web-mode tide swiper scala-mode2 markdown-mode magit leuven-theme json-mode helm-projectile helm-ag groovy-mode elpy dockerfile-mode clj-refactor ag ac-js2 ac-cider)))
  '(savehist-mode t)
  '(select-enable-clipboard t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify)))
