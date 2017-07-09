@@ -37,6 +37,10 @@
   (global-set-key (kbd "<home>") 'beginning-of-line)
   (global-set-key (kbd "<end>") 'end-of-line))
 
+;; Fix trackpad scrolling (especially on the Mac).
+(setq mouse-wheel-scroll-amount '(4 ((shift) . 2) ((control) . nil)))
+(setq mouse-wheel-progressive-speed nil)
+
 ;; Some enabled operations.
 (put 'narrow-to-region 'disabled nil)
 (put 'eval-expression 'disabled nil)
