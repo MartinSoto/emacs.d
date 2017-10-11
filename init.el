@@ -340,7 +340,7 @@
  '(nil nil t)
  '(package-selected-packages
    (quote
-    (meghanada clojure-snippets yaml-mode web-mode tide swiper scala-mode2 markdown-mode magit leuven-theme json-mode helm-projectile helm-ag groovy-mode elpy dockerfile-mode clj-refactor ag ac-js2 ac-cider)))
+    (ac-cider cider clj-refactor meghanada clojure-snippets yaml-mode web-mode tide swiper scala-mode2 markdown-mode magit leuven-theme json-mode helm-projectile helm-ag groovy-mode elpy dockerfile-mode ag ac-js2)))
  '(savehist-mode t)
  '(select-enable-clipboard t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
@@ -350,7 +350,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- ;'(default ((t (:height 110 :family "Ubuntu Mono"))))
  '(flymake-errline ((((class color) (background light)) (:underline "darkred"))))
  '(flymake-warnline ((((class color) (background light)) (:underline "blue"))))
  '(mumamo-background-chunk-major ((((class color) (min-colors 88) (background light)) (:background "white"))) t)
