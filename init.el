@@ -124,9 +124,6 @@
 ;; file name but different directories.
 (require 'uniquify)
 
-;; Electric pairing.
-(electric-pair-mode)
-
 ;; Auto-complete.
 (require 'auto-complete)
 
