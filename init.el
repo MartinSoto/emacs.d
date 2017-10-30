@@ -342,7 +342,7 @@
  '(nil nil t)
  '(package-selected-packages
    (quote
-    (smartparens helm-ag helm-projectile ac-helm helm projectile ac-cider cider clj-refactor meghanada clojure-snippets yaml-mode web-mode tide swiper scala-mode2 markdown-mode magit leuven-theme json-mode groovy-mode elpy dockerfile-mode ac-js2)))
+    (leuven-theme smartparens helm-projectile projectile helm-ag helm yaml-mode web-mode tide meghanada markdown-mode magit json-mode groovy-mode elpy dockerfile-mode ac-cider cider clojure-snippets ac-helm)))
  '(savehist-mode t)
  '(select-enable-clipboard t)
  '(sp-base-key-bindings (quote sp))
