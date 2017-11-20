@@ -197,12 +197,12 @@
 
 ;; Meghanada for Java
 
-(require 'meghanada)
+;; (require 'meghanada)
 
-(defun my-java-mode-hook ()
-  (meghanada-mode t))
+;; (defun my-java-mode-hook ()
+;;   (meghanada-mode t))
 
-(add-hook 'java-mode-hook #'my-java-mode-hook)
+;; (add-hook 'java-mode-hook #'my-java-mode-hook)
 
 
 ;; Restart the system on refresh.
